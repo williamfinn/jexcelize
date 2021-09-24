@@ -2,4 +2,4 @@ module github.com/williamfinn/jexcelize
 
 go 1.15
 
-require github.com/360EntSecGroup-Skylar/excelize v1.4.1 // indirect
+require github.com/xuri/excelize/v2 v2.4.1

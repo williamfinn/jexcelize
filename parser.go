@@ -3,7 +3,7 @@ package jexcelize
 import (
 	"encoding/json"
 	"errors"
-	"github.com/360EntSecGroup-Skylar/excelize"
+	"github.com/xuri/excelize/v2"
 )
 
 type ExcelParser struct {
@@ -16,15 +16,7 @@ func NewExcelParser(file *excelize.File) *ExcelParser {
 
 // get all rows in a given sheet to [][]string
 func (p *ExcelParser) RowsToString(sheet string) ([][]string, error) {
-	rows, err := p.file.Rows(sheet)
-	if err != nil {
-		return [][]string{}, err
-	}
-	var columns [][]string
-	for rows.Next() {
-		columns = append(columns, rows.Columns())
-	}
-	return columns, nil
+	return p.file.GetRows(sheet)
 }
 
 // converts rows to []map[string]interface{}, this can then be used to convert to json
