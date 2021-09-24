@@ -25,6 +25,3 @@ j, err := parser.RowsToJson("users")
 // here we print string(j), unmarshalling to model is more useful implementation
 fmt.Println(string(j))
 ```
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
