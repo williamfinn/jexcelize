@@ -14,25 +14,26 @@ func NewExcelParser(file *excelize.File) *ExcelParser {
 	return &ExcelParser{file: file}
 }
 
-// get all rows in a given sheet to [][]string
+// RowsToString gets all rows in a given sheet to [][]string
 func (p *ExcelParser) RowsToString(sheet string) ([][]string, error) {
 	return p.file.GetRows(sheet)
 }
 
-// converts rows to []map[string]interface{}, this can then be used to convert to json
+// RowsToMap converts rows to []map[string]interface{}, this can then be used to convert to json
 func (p *ExcelParser) RowsToMap(sheet string) ([]map[string]interface{}, error) {
 	allRows, err := p.RowsToString(sheet)
 	if err != nil {
-		return []map[string]interface{}{}, err
+		return nil, err
 	}
 
 	if len(allRows) < 2 {
-		return []map[string]interface{}{}, errors.New("there must be at least 2 rows in sheet")
+		return nil, errors.New("there must be at least 2 rows in sheet")
 	}
 
 	header := allRows[0]
-	length := len(header)
 	rows := allRows[1:]
+
+	length := len(header)
 
 	var values []map[string]interface{}
 	for _, row := range rows {
@@ -49,15 +50,15 @@ func (p *ExcelParser) RowsToMap(sheet string) ([]map[string]interface{}, error) 
 	return values, nil
 }
 
-// converts the RowsToMap return value of []map[string]interface{} to []byte which can then be unmarshalled
+// RowsToJson converts the RowsToMap return value of []map[string]interface{} to []byte which can then be unmarshalled
 func (p *ExcelParser) RowsToJson(sheet string) ([]byte, error) {
 	dictRows, err := p.RowsToMap(sheet)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 	j, err := json.Marshal(dictRows)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 	return j, nil
 }
